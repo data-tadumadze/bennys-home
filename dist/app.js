@@ -10,7 +10,7 @@ const camera=new THREE.PerspectiveCamera(68,innerWidth/innerHeight,.045,100);
 camera.rotation.order='YXZ';let renderer,ready=false,walking=false,drag=null,eyeHeight=1.65,pace=1.25;
 const keys=new Set(),mats=new Map();
 const touchLayout=matchMedia('(max-width: 800px), (pointer: coarse), (max-width: 1000px) and (max-height: 600px)');
-let lookSensitivity=.35;
+let lookSensitivity=.40;
 function fail(error){$('#loader').hidden=true;$('#error').hidden=false;$('#error-message').textContent='The 3D view needs a browser with WebGL support. '+(error?.message||'Please reload and try again.');console.error(error);}
 try{
   renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});
@@ -82,13 +82,14 @@ loader.load('./assets/home.glb',gltf=>{
     if(m.name==='Ceiling'){o.castShadow=false;}
     m.needsUpdate=true;
   });
-  scene.add(home);ready=true;$('#loader').hidden=true;teleport('living',false);updateMap();
+  scene.add(home);ready=true;$('#loader').hidden=true;$('#touch-start').disabled=false;teleport('living',false);updateMap();
 },e=>{$('#load-progress').textContent=e.total?`Loading the space · ${Math.round(e.loaded/e.total*100)}%`:'Loading the space…';},fail);
 
 function toast(message){$('#toast').textContent=message;$('#toast').hidden=false;clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('#toast').hidden=true,3200);}
 function begin(){if(!ready)return;walking=true;document.body.classList.add('walking');$('#resume').hidden=controls.isLocked||touchLayout.matches;}
 async function lock(){if(!ready)return;begin();if(touchLayout.matches)return;try{await canvas.requestPointerLock();}catch(e){toast('Drag the view to look around. The movement buttons and WASD still work.');}}
 $('#start').onclick=lock;$('#resume').onclick=lock;
+$('#touch-start').onclick=()=>{begin();canvas.focus({preventScroll:true});};
 controls.addEventListener('lock',()=>{begin();$('#crosshair').hidden=false;$('#status').textContent='Mouse to look · Esc to pause';$('#resume').hidden=true;$('#settings').hidden=true;$('#settings-toggle').setAttribute('aria-expanded','false');});
 controls.addEventListener('unlock',()=>{$('#crosshair').hidden=true;syncControlHints();resetInput();});
 document.addEventListener('pointerlockerror',()=>toast('Mouse capture is unavailable here. Drag to look around.'));
@@ -122,8 +123,8 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden)resetInput(
 function turn(yaw,pitch){camera.rotation.y-=yaw;camera.rotation.x=THREE.MathUtils.clamp(camera.rotation.x-pitch,-1.35,1.35);}
 function syncControlHints(){
   document.body.classList.toggle('touch-mode',touchLayout.matches);
-  $('#status').textContent=touchLayout.matches?'Hold arrows to move · Right stick to look':'Drag to look around';
-  $('.welcome-hint').textContent=touchLayout.matches?'Left thumb to move · Right thumb to look':'WASD to move · Mouse to look around';
+  if(touchLayout.matches){$('#minimap').hidden=false;$('#map-toggle').textContent='−';$('#map-toggle').setAttribute('aria-expanded','true');}
+  $('#status').textContent=touchLayout.matches?'':'Drag to look around';
   $('#resume').hidden=touchLayout.matches||!walking||controls.isLocked;
 }
 syncControlHints();touchLayout.addEventListener('change',()=>{resetInput();if(controls.isLocked&&touchLayout.matches)controls.unlock();syncControlHints();});

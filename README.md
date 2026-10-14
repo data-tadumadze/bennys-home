@@ -5,8 +5,8 @@ A lightweight, first-person 3D walkthrough of the entrance, kitchen and living r
 ## Controls
 
 - Desktop: WASD or arrow keys to walk, mouse to look, Escape to release the mouse. Drag-to-look is also available.
-- Phone: hold the left arrows to walk and drag the right look stick to turn. Both controls work together. Release the stick to stop turning.
-- Settings: look sensitivity (35% by default on phones), eye height, walking pace and floor finish.
+- Phone: touch the screen to start, then hold the left arrows to walk and drag the right look stick to turn. Both controls work together. Release the stick to stop turning.
+- Settings: look sensitivity (40% by default on phones), eye height, walking pace and floor finish.
 - Room buttons: jump to the living room, kitchen or entrance.
 
 ## Run locally
