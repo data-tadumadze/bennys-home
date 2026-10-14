@@ -1,0 +1,12 @@
+{
+  "name": "bennys-home-walkthrough",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "three": "0.186.1"
+  },
+  "scripts": {
+    "start": "python3 -m http.server 4173 --directory dist",
+    "test": "node scripts/check_navigation.mjs && node scripts/check_touch_controls.mjs"
+  }
+}

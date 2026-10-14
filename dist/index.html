@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ece7db"><meta name="description" content="Step inside Benny’s new home. An interactive walkthrough of the entrance, kitchen and living room.">
+  <title>Benny’s Home — Step inside</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/"}}</script>
+</head>
+<body>
+  <main id="home" aria-label="Interactive home walkthrough">
+    <canvas id="scene" aria-label="3D home. Drag to look around, or choose Walk inside for mouse look. Use WASD or the movement buttons to walk." tabindex="0"></canvas>
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="Benny’s home, reset view"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 15 16 6l11 9v12H5Z M12 27V16h8v11"/></svg><span>Benny’s home<small>A SPACE TO CALL OUR OWN</small></span></a>
+      <nav class="rooms" aria-label="Go to a room"><button data-room="living">Living room</button><button data-room="kitchen">Kitchen</button><button data-room="entrance">Entrance</button></nav>
+      <button id="settings-toggle" class="icon-button" aria-label="View settings" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 17h16M8 4v6m8 4v6"/></svg></button>
+    </header>
+    <div id="loader" role="status"><span class="loader-mark">b.</span><p>Making yourself at home…</p><span id="load-progress">Loading the space</span></div>
+    <div id="error" hidden role="alert"><h2>We couldn’t open the home.</h2><p id="error-message"></p><button onclick="location.reload()">Try again</button></div>
+    <section id="welcome" aria-label="Start exploring"><p class="eyebrow">BENNY’S NEW HOME · A WALKTHROUGH</p><h1>Come on in.</h1><p class="welcome-description">A little wood. A little green.<br>A place for everything, and everyone.</p><button id="start" class="primary">Walk inside <span aria-hidden="true">↗</span></button><p class="welcome-hint">WASD to move · Mouse to look around</p></section>
+    <aside id="settings" hidden aria-label="View settings"><div class="panel-title">Make yourself comfortable<button id="settings-close" aria-label="Close settings">×</button></div><label class="setting-label">Floor finish</label><div class="segmented"><button data-floor="wood" aria-pressed="true">Warm oak</button><button data-floor="tile" aria-pressed="false">Ceramic</button></div><label class="setting-label" for="height">Eye height <output id="height-value">1.65 m</output></label><input id="height" type="range" min="1.40" max="1.90" step="0.01" value="1.65"><div class="look-setting"><label class="setting-label" for="look-sensitivity">Look sensitivity <output id="sensitivity-value">35% · Low</output></label><input id="look-sensitivity" type="range" min="15" max="100" step="5" value="35"><p class="setting-help">Drag the right stick gently to turn. Release it to stop.</p></div><label class="setting-label" for="speed">Walking pace</label><select id="speed"><option value="1.25">Easy stroll</option><option value="1.8">A little faster</option></select><button id="reset" class="secondary">Return to the starting view</button><p class="model-note">Reconstructed from the design drawings and renders. Ceiling height is provisionally 2.80 m; furniture and finishes are simplified.</p></aside>
+    <aside id="map-panel" class="map-panel" aria-label="Floor plan"><div class="map-heading"><span>YOU ARE HERE</span><button id="map-toggle" aria-expanded="true" aria-label="Toggle floor plan">−</button></div><svg id="minimap" viewBox="-0.25 -0.25 6.8 9.3" role="img" aria-label="Your position in the home"><g transform="translate(0 8.75) scale(1 -1)"><path class="map-floor" d="M0 0H6.29V4.2H4.66V8.75H3.35V5.87H0Z"/><path class="map-furniture" d="M.05 1.7h.43v3.8H.05Z M2.15 2.35h1v2.75h-1V5.05h-.8v-.8h.8Z M1.97 .8h2.38v.85H1.97Z M5.68 1.1h.60v3.1h-.60Z M4.38 2.62h.4v1.4h-.4Z M3.35 5.87h.55v2.75h-.55Z"/><path class="map-window" d="M.1 0H6.2"/><g id="map-position"><circle r=".22"/><path d="M-.08 .02 0 .13 .08 .02"/></g></g></svg><div id="room-label">Living & dining</div></aside>
+    <div id="crosshair" hidden aria-hidden="true"></div>
+    <div class="bottom-bar"><div class="movement" aria-label="Movement controls"><button data-move="forward" class="forward" aria-label="Walk forward">↑</button><button data-move="left" aria-label="Step left">←</button><button data-move="back" aria-label="Walk backward">↓</button><button data-move="right" aria-label="Step right">→</button></div><div class="controls-hint"><span id="status">Drag to look around</span><span class="hint-divider">/</span><span>WASD to walk</span><button id="resume" hidden>Mouse look</button></div><div class="look-controls"><span class="control-caption" id="look-label">LOOK</span><button id="look-pad" aria-label="Camera look stick. Drag to look around; release to stop. Arrow keys also turn the view."><svg class="look-guides" viewBox="0 0 100 100" aria-hidden="true"><path d="m46 15 4-4 4 4m-8 70 4 4 4-4M15 46l-4 4 4 4m70-8 4 4-4 4"/></svg><span id="look-thumb" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12s3-6 9-6 9 6 9 6-3 6-9 6-9-6-9-6Z"/><circle cx="12" cy="12" r="2.5"/></svg></span></button></div><button id="fullscreen" class="icon-button" aria-label="Toggle fullscreen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5m11-5h5v5M4 15v5h5m11-5v5h-5"/></svg></button></div>
+    <div id="toast" role="status" hidden></div>
+  </main>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
